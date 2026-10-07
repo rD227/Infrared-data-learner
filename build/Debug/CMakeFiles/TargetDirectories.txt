@@ -1,0 +1,6 @@
+/home/xvsu/MCUproject/Infrared-data-learner/build/Debug/CMakeFiles/Infrared-data-learner.dir
+/home/xvsu/MCUproject/Infrared-data-learner/build/Debug/CMakeFiles/edit_cache.dir
+/home/xvsu/MCUproject/Infrared-data-learner/build/Debug/CMakeFiles/rebuild_cache.dir
+/home/xvsu/MCUproject/Infrared-data-learner/build/Debug/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir
+/home/xvsu/MCUproject/Infrared-data-learner/build/Debug/cmake/stm32cubemx/CMakeFiles/edit_cache.dir
+/home/xvsu/MCUproject/Infrared-data-learner/build/Debug/cmake/stm32cubemx/CMakeFiles/rebuild_cache.dir

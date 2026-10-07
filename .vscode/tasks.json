@@ -1,0 +1,47 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Configure (Debug)",
+            "type": "process",
+            "command": "cmake",
+            "args": ["--preset", "Debug"],
+            "options": {"cwd": "${workspaceFolder}"},
+            "problemMatcher": []
+        },
+        {
+            "label": "Build (Debug)",
+            "type": "process",
+            "command": "cmake",
+            "args": ["--build", "--preset", "Debug"],
+            "options": {"cwd": "${workspaceFolder}"},
+            "dependsOn": "Configure (Debug)",
+            "group": {"kind": "build", "isDefault": true},
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "Generate BIN (Debug)",
+            "type": "process",
+            "command": "arm-none-eabi-objcopy",
+            "args": [
+                "-O", "binary",
+                "${workspaceFolder}/build/Debug/Infrared-data-learner.elf",
+                "${workspaceFolder}/build/Debug/Infrared-data-learner.bin"
+            ],
+            "dependsOn": "Build (Debug)",
+            "problemMatcher": []
+        },
+        {
+            "label": "Flash (ST-Link)",
+            "type": "process",
+            "command": "st-flash",
+            "args": [
+                "--reset", "write",
+                "${workspaceFolder}/build/Debug/Infrared-data-learner.bin",
+                "0x08000000"
+            ],
+            "dependsOn": "Generate BIN (Debug)",
+            "problemMatcher": []
+        }
+    ]
+}

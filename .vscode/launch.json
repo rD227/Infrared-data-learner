@@ -9,7 +9,7 @@
             "type": "cortex-debug",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "executable": "${workspaceFolder}/build/Debug/vsc.elf",
+            "executable": "${workspaceFolder}/build/Debug/Infrared-data-learner.elf",
             "servertype": "stutil",
             "interface": "swd",
             "device": "STM32F103C8",
