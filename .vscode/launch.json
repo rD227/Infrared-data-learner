@@ -1,0 +1,23 @@
+{
+    // 使用系统工具链调试（cortex-debug + stlink 包提供的 st-util）
+    // 依赖：pacman -S arm-none-eabi-gcc arm-none-eabi-newlib arm-none-eabi-binutils
+    //                arm-none-eabi-gdb stlink
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "STM32 Debug (ST-Link)",
+            "type": "cortex-debug",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/build/Debug/vsc.elf",
+            "servertype": "stutil",
+            "interface": "swd",
+            "device": "STM32F103C8",
+            "armToolchainPath": "/usr/bin",
+            "runToEntryPoint": "main",
+            "preLaunchTask": "Build (Debug)"
+            // 想让"外设寄存器"面板可用，把 STM32F103xx.svd 放到项目里再打开下面这行：
+            // "svdFile": "${workspaceFolder}/STM32F103xx.svd"
+        }
+    ]
+}
