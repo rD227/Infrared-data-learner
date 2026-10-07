@@ -18,23 +18,35 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "stm32_hal_legacy.h"
+#include "stm32f103xb.h"
+#include "stm32f1xx_hal_gpio.h"
+#include "stm32f1xx_hal_tim.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
+#include <stdint.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+typedef enum
+{
+  IR_WAIT_IDLE,  // 等待信号恢复空闲，避免从一个帧的中间开始
+  IR_IDLE,       // 等待第一个下降沿
+  IR_RECORDING,  // 逐段记录时长
+  IR_READY       // 数组已冻结，等待主循环发送
+} IR_State;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define IR_CAPACITY 512u
+#define IR_GAP_MS   30u
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -45,7 +57,11 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+volatile uint16_t wave[IR_CAPACITY];
+volatile uint16_t count = 0;
+static volatile IR_State irState = IR_WAIT_IDLE;
+static volatile uint32_t lastEdgeMs = 0;
+static uint16_t lastEdge;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -56,7 +72,83 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint8_t msg[] = "Hello\n";
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  if (GPIO_Pin != GPIO_PIN_0 || irState == IR_READY)
+    return;
+
+  uint16_t now = (uint16_t)__HAL_TIM_GET_COUNTER(&htim2);
+  uint32_t nowMs = HAL_GetTick();
+  GPIO_PinState level = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
+
+  if (irState == IR_RECORDING)
+  {
+    // 主循环若没及时处理帧间空闲，也不把长间隔写进数组。
+    if (level == GPIO_PIN_RESET && nowMs - lastEdgeMs >= IR_GAP_MS)
+    {
+      irState = IR_READY;
+      return;
+    }
+
+    wave[count++] = (uint16_t)(now - lastEdge);
+    lastEdge = now;
+    if (count == IR_CAPACITY)
+      irState = IR_READY;  // 数组满：停止写入，禁止越界
+  }
+  else if (irState == IR_IDLE && level == GPIO_PIN_RESET)
+  {
+    // 第一个下降沿只记起点，不保存前面的空闲高电平。
+    count = 0;
+    lastEdge = now;
+    irState = IR_RECORDING;
+  }
+
+  lastEdgeMs = nowMs;
+}
+
+static void IR_Poll(void)
+{
+  // 检查超时和切换状态必须与边沿中断互斥，发送时则保持中断开启。
+  uint32_t primask = __get_PRIMASK();
+  __disable_irq();
+  if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET &&
+      HAL_GetTick() - lastEdgeMs >= IR_GAP_MS)
+  {
+    if (irState == IR_RECORDING)
+      irState = IR_READY;  // 帧结束，尾部的空闲高电平不写入数组
+    else if (irState == IR_WAIT_IDLE)
+      irState = IR_IDLE;
+  }
+  __set_PRIMASK(primask);
+
+  if (irState != IR_READY)
+    return;
+
+  char text[80];
+  int length = snprintf(text, sizeof(text),
+                        "IR_RAW_US LOW_FIRST count=%u end=%s ",
+                        (unsigned)count,
+                        count == IR_CAPACITY ? "FULL" : "GAP");
+  if (HAL_UART_Transmit(&huart1, (uint8_t *)text, (uint16_t)length, 100) != HAL_OK)
+    Error_Handler();
+
+  for (uint16_t i = 0; i < count; ++i)
+  {
+    length = snprintf(text, sizeof(text), "%s%u",
+                      i == 0 ? "" : ",", (unsigned)wave[i]);
+    if (HAL_UART_Transmit(&huart1, (uint8_t *)text, (uint16_t)length, 100) != HAL_OK)
+      Error_Handler();
+  }
+  if (HAL_UART_Transmit(&huart1, (uint8_t *)"\r\n", 2, 100) != HAL_OK)
+    Error_Handler();
+
+  primask = __get_PRIMASK();
+  __disable_irq();
+  count = 0;
+  lastEdgeMs = HAL_GetTick();
+  irState = IR_WAIT_IDLE;
+  __set_PRIMASK(primask);
+}
 /* USER CODE END 0 */
 
 /**
@@ -91,7 +183,9 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-
+  if (HAL_TIM_Base_Start(&htim2) != HAL_OK)
+    Error_Handler();
+  lastEdgeMs = HAL_GetTick();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -101,6 +195,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    IR_Poll();
   }
   /* USER CODE END 3 */
 }

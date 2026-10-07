@@ -7,7 +7,7 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "stm32cubemx::@768a070a0fe75716b479",
-					"jsonFile" : "target-stm32cubemx-Debug-61971e4e43c8989c4208.json",
+					"jsonFile" : "target-stm32cubemx-Debug-2e4ac62e854e9186266b.json",
 					"name" : "stm32cubemx",
 					"projectIndex" : 0
 				}
@@ -78,14 +78,14 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "Infrared-data-learner::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-Infrared-data-learner-Debug-e01ba6e9f8f551d288c6.json",
+					"jsonFile" : "target-Infrared-data-learner-Debug-dd3d369aa84803d11070.json",
 					"name" : "Infrared-data-learner",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 1,
 					"id" : "STM32_Drivers::@768a070a0fe75716b479",
-					"jsonFile" : "target-STM32_Drivers-Debug-76baa0a7ead1c06a10ff.json",
+					"jsonFile" : "target-STM32_Drivers-Debug-ec369674fc07f381b80e.json",
 					"name" : "STM32_Drivers",
 					"projectIndex" : 0
 				}
