@@ -7,6 +7,16 @@
             "command": "cmake",
             "args": ["--preset", "Debug"],
             "options": {"cwd": "${workspaceFolder}"},
+            "windows": {
+                "command": "C:/Users/xvsu/AppData/Local/stm32cube/bundles/cmake/4.3.1+st.1/bin/cmake.exe",
+                "args": ["--fresh", "--preset", "Debug"],
+                "options": {
+                    "cwd": "${workspaceFolder}",
+                    "env": {
+                        "PATH": "C:/Users/xvsu/AppData/Local/stm32cube/bundles/cmake/4.3.1+st.1/bin;C:/Users/xvsu/AppData/Local/stm32cube/bundles/ninja/1.13.1+st.1/bin;C:/Users/xvsu/AppData/Local/stm32cube/bundles/gnu-tools-for-stm32/14.3.1+st.2/bin;${env:PATH}"
+                    }
+                }
+            },
             "problemMatcher": []
         },
         {
@@ -16,6 +26,15 @@
             "args": ["--build", "--preset", "Debug"],
             "options": {"cwd": "${workspaceFolder}"},
             "dependsOn": "Configure (Debug)",
+            "windows": {
+                "command": "C:/Users/xvsu/AppData/Local/stm32cube/bundles/cmake/4.3.1+st.1/bin/cmake.exe",
+                "options": {
+                    "cwd": "${workspaceFolder}",
+                    "env": {
+                        "PATH": "C:/Users/xvsu/AppData/Local/stm32cube/bundles/cmake/4.3.1+st.1/bin;C:/Users/xvsu/AppData/Local/stm32cube/bundles/ninja/1.13.1+st.1/bin;C:/Users/xvsu/AppData/Local/stm32cube/bundles/gnu-tools-for-stm32/14.3.1+st.2/bin;${env:PATH}"
+                    }
+                }
+            },
             "group": {"kind": "build", "isDefault": true},
             "problemMatcher": ["$gcc"]
         },
@@ -29,6 +48,9 @@
                 "${workspaceFolder}/build/Debug/Infrared-data-learner.bin"
             ],
             "dependsOn": "Build (Debug)",
+            "windows": {
+                "command": "C:/Users/xvsu/AppData/Local/stm32cube/bundles/gnu-tools-for-stm32/14.3.1+st.2/bin/arm-none-eabi-objcopy.exe"
+            },
             "problemMatcher": []
         },
         {
@@ -41,6 +63,14 @@
                 "0x08000000"
             ],
             "dependsOn": "Generate BIN (Debug)",
+            "windows": {
+                "command": "C:/Users/xvsu/AppData/Local/stm32cube/bundles/programmer/2.23.0/bin/STM32_Programmer_CLI.exe",
+                "args": [
+                    "-c", "port=SWD",
+                    "-w", "${workspaceFolder}/build/Debug/Infrared-data-learner.elf",
+                    "-v", "-rst"
+                ]
+            },
             "problemMatcher": []
         }
     ]

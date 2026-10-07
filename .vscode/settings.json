@@ -1,5 +1,11 @@
 {
+    "cmake.useCMakePresets": "always",
+    "cmake.preferredGenerators": ["Ninja"],
+    "cmake.cmakePath": "C:/Users/xvsu/AppData/Local/stm32cube/bundles/cmake/4.3.1+st.1/bin/cmake.exe",
+    "cmake.environment": {
+        "PATH": "C:/Users/xvsu/AppData/Local/stm32cube/bundles/cmake/4.3.1+st.1/bin;C:/Users/xvsu/AppData/Local/stm32cube/bundles/ninja/1.13.1+st.1/bin;C:/Users/xvsu/AppData/Local/stm32cube/bundles/gnu-tools-for-stm32/14.3.1+st.2/bin;${env:PATH}"
+    },
     "clangd.arguments": [
-        "--query-driver=/usr/bin/arm-none-eabi-gcc,/usr/bin/arm-none-eabi-g++,/usr/sbin/arm-none-eabi-gcc,/usr/sbin/arm-none-eabi-g++"
+        "--query-driver=C:/Users/xvsu/AppData/Local/stm32cube/bundles/gnu-tools-for-stm32/14.3.1+st.2/bin/arm-none-eabi-gcc.exe,C:/Users/xvsu/AppData/Local/stm32cube/bundles/gnu-tools-for-stm32/14.3.1+st.2/bin/arm-none-eabi-g++.exe"
     ]
 }

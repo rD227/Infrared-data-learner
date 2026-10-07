@@ -1,7 +1,5 @@
 {
-    // 使用系统工具链调试（cortex-debug + stlink 包提供的 st-util）
-    // 依赖：pacman -S arm-none-eabi-gcc arm-none-eabi-newlib arm-none-eabi-binutils
-    //                arm-none-eabi-gdb stlink
+    // Windows tools match the sibling vsc project.
     "version": "0.2.0",
     "configurations": [
         {
@@ -10,10 +8,12 @@
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "executable": "${workspaceFolder}/build/Debug/Infrared-data-learner.elf",
-            "servertype": "stutil",
+            "servertype": "stlink",
             "interface": "swd",
             "device": "STM32F103C8",
-            "armToolchainPath": "/usr/bin",
+            "stlinkPath": "C:/Users/xvsu/AppData/Local/stm32cube/bundles/stlink-gdbserver/7.14.0+st.2/bin/ST-LINK_gdbserver.exe",
+            "stm32cubeprogrammer": "C:/Users/xvsu/AppData/Local/stm32cube/bundles/programmer/2.23.0/bin",
+            "armToolchainPath": "C:/Users/xvsu/AppData/Local/stm32cube/bundles/gnu-tools-for-stm32/14.3.1+st.2/bin",
             "runToEntryPoint": "main",
             "preLaunchTask": "Build (Debug)"
             // 想让"外设寄存器"面板可用，把 STM32F103xx.svd 放到项目里再打开下面这行：

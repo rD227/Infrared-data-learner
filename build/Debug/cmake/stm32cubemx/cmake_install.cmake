@@ -1,8 +1,8 @@
-# Install script for directory: /home/xvsu/MCUproject/Infrared-data-learner/cmake/stm32cubemx
+# Install script for directory: D:/Users/xvsu/Documents/Infrared-data-learner/cmake/stm32cubemx
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/usr/local")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/Infrared-data-learner")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -34,12 +34,12 @@ endif()
 
 # Set path to fallback-tool for dependency-resolution.
 if(NOT DEFINED CMAKE_OBJDUMP)
-  set(CMAKE_OBJDUMP "/usr/sbin/arm-none-eabi-objdump")
+  set(CMAKE_OBJDUMP "C:/Users/xvsu/AppData/Local/stm32cube/bundles/gnu-tools-for-stm32/14.3.1+st.2/bin/arm-none-eabi-objdump.exe")
 endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/home/xvsu/MCUproject/Infrared-data-learner/build/Debug/cmake/stm32cubemx/install_local_manifest.txt"
+  file(WRITE "D:/Users/xvsu/Documents/Infrared-data-learner/build/Debug/cmake/stm32cubemx/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()
